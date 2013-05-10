@@ -67,3 +67,23 @@ Right now, there are two scripts you can look at to see how to geocode with geop
     - Update the queries so they reference the appropriate tables and columns for your database.
     
 Very soon, there will be a django application that you can use to make batch geocoding requests from multiple sources like google docs or a database table, then have them run in the background, notifying you of problems or completion via email.  Not just yet, however.
+
+## License
+
+Copyright 2013 Jonathan Morgan
+
+This file is part of [http://github.com/jonathanmorgan/geocoding](http://github.com/jonathanmorgan/geocoding).
+
+geocoding is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Foobar is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with [http://github.com/jonathanmorgan/geocoding](http://github.com/jonathanmorgan/geocoding).  If not, see
+[http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
