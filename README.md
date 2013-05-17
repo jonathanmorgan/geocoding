@@ -110,6 +110,14 @@ In this file, configure the DATABASES data structure to fir your MySQL database 
             }
         }
 
+- To test, in your site directory, run the following:
+
+        python manage.py validate
+
+- If validate completes with no errors, then run:
+
+        python manage.py syncdb
+
 ## Usage
 
 Right now, there are two scripts you can look at to see how to geocode with geopy:
