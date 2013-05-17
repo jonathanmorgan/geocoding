@@ -53,6 +53,24 @@ Install geopy using pip:
 
     sudo pip install geopy
     
+### MySQL
+
+- Make sure mysql client and server are installed on your server.  The packages in ubuntu are "mysql-server" and "mysql-client".
+
+- Log into MySQL and create a database for the geocoding application:
+
+        CREATE DATABASE geocoding CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+- Create a user for geocoding.
+
+        CREATE USER 'geocoding'@'localhost' IDENTIFIED BY '<password>';
+        CREATE USER 'geocoding'@'%' IDENTIFIED BY '<password>';
+
+- Grant geocoding user permissions to geocoding database.
+
+        GRANT ALL PRIVILEGES ON geocoding.* TO 'geocoding'@'localhost';
+        GRANT ALL PRIVILEGES ON geocoding.* TO 'geocoding'@'%';
+
 ## Usage
 
 Right now, there are two scripts you can look at to see how to geocode with geopy:
@@ -79,7 +97,7 @@ it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Foobar is distributed in the hope that it will be useful,
+geocoding is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
