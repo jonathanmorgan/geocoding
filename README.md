@@ -57,6 +57,16 @@ Install geopy using pip:
 
 - Make sure mysql client and server are installed on your server.  The packages in ubuntu are "mysql-server" and "mysql-client".
 
+        sudo apt-get install mysql-server mysql-client
+
+- Also install the libmysqlclient-dev package, for building the python MySQLdb database connector.
+
+        sudo apt-get install libmysqlclient-dev
+
+- And make sure you have python-dev installed, as well:
+
+        sudo apt-get install python-dev python3-dev
+
 - Log into MySQL and create a database for the geocoding application:
 
         CREATE DATABASE geocoding CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -70,6 +80,35 @@ Install geopy using pip:
 
         GRANT ALL PRIVILEGES ON geocoding.* TO 'geocoding'@'localhost';
         GRANT ALL PRIVILEGES ON geocoding.* TO 'geocoding'@'%';
+
+- Install the python MySQL connector, MySQLdb.
+
+        sudo pip install mysql-python
+
+### Configure django
+
+In your site directory, go into the directory of the same name as your site directory (so, `site_directory/site_directory/`) and edit the settings.py file found there.
+
+In this file, configure the DATABASES data structure to fir your MySQL database and user:
+
+- In settings.py, in the DATABASES structure:
+    - set the ENGINE to "django.db.backends.mysql"
+    - set the database NAME, USER, and PASSWORD.
+    - If the database is not on localhost, enter a HOST.
+    - If the database is listening on a non-standard port, enter a PORT.
+- Example:
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+                'NAME': 'geocoding',                      # Or path to database file if using sqlite3.
+                # The following settings are not used with sqlite3:
+                'USER': 'geocoding',
+                'PASSWORD': '<mysql_password>',
+                'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+                'PORT': '',                      # Set to empty string for default.
+            }
+        }
 
 ## Usage
 
