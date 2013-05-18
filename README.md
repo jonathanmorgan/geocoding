@@ -25,27 +25,35 @@ Now, we install the google data interface into our django site, so it is accessi
 
 - Install ElementTree python module.
 
-        sudo pip install ElementTree
+        (sudo) pip install ElementTree
     
 - Download and install the google data library.
-    - First, go to the Google Code page for the gdata library: [https://code.google.com/p/gdata-python-client/](https://code.google.com/p/gdata-python-client/)
-    - Then, download the latest (2.0.17 at the time of writing).  Download page: [https://code.google.com/p/gdata-python-client/downloads/list](https://code.google.com/p/gdata-python-client/downloads/list)
-    - uncompress and unpack the tar.gz file that you downloaded.
 
-            tar -xvzf gdata-2.0.17.tar.gz
+    - From pip (try this first):
 
-    - Now, you need to compile and install it.  Go into the gdata directory the uncompress created.
-        - To install system-wide:
+            (sudo) pip install gdata
 
-                sudo python setup.py install
-                
-        - To just install inside your home directory, for use by your user:
+    - From source (if you have problems and want to be able to run the test scripts):
+
+        - First, go to the Google Code page for the gdata library: [https://code.google.com/p/gdata-python-client/](https://code.google.com/p/gdata-python-client/)
+        - Then, download the latest (2.0.17 at the time of writing).  Download page: [https://code.google.com/p/gdata-python-client/downloads/list](https://code.google.com/p/gdata-python-client/downloads/list)
+        - uncompress and unpack the tar.gz file that you downloaded.
+
+                tar -xvzf gdata-2.0.17.tar.gz
+
+        - Now, you need to compile and install it.  Go into the gdata directory the uncompress created.
         
-                python setup.py install --home=<path_to_home_directory>
+            - To install system-wide:
 
-    - to test, from the source folder that you unpacked, run:
+                    sudo python setup.py install
+                
+            - To just install inside your home directory, for use by your user:
+        
+                    python setup.py install --home=<path_to_home_directory>
+
+        - to test, from the source folder that you unpacked, run:
     
-            ./tests/run_data_tests.py
+                ./tests/run_data_tests.py
 
 ### geopy
 
