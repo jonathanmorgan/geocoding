@@ -18,14 +18,6 @@ along with http://github.com/jonathanmorgan/geocoding.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
-# !TODO - update this so it actually does the geocoding.
-# - set up geocoder
-# - Loop over entries
-#     - for each, get dict of values.
-#     - pull out address field.
-#     - geocode
-#     - set result fields.
-#     - update the row.
 # !TODO - see if we can get count of rows, pull in sets of rows, so we don't have the entire spreadsheet in memory at once.
 
 # imports
@@ -186,10 +178,8 @@ row_2_values = gspread_worksheet.row_values( 2 )
 
 # also a batch update.
 
-'''
-
 # get number of rows
-row_count = int( my_cursor.rowcount )
+row_count = len( row_entry_list )
 
 # get google geocoding object.
 # based on this commit: https://github.com/jbouvier/geopy/commit/c2f2e9137eef0c0eafdab39071ba1e7d70e38a8ei
@@ -198,12 +188,16 @@ my_secret_key = ""
 google_geo = geopy.geocoders.GoogleV3( client_id = my_client_id, secret_key = my_secret_key )
 
 # loop, geocoding each.
-for i in range( row_count ):
+for current_row_entry in row_entry_list:
 
-    # get next row, address
-    current_row = my_cursor.fetchone()
-    current_id = current_row[ "id" ]
-    current_address = current_row[ "location" ]
+    # to get the column data out, you use the text_db.Record class, then use the dict record.content
+    row_record = gdata.spreadsheet.text_db.Record( row_entry = current_row_entry )
+
+    # get the "content" dict that is nested in row_record
+    row_content = row_record.content
+
+    # get the address
+    current_address = row_content[ "location" ]
     
     # transformations:
     # LA SALLE ==> LASALLE
@@ -289,26 +283,23 @@ for i in range( row_count ):
         
     #-- END try/except around geocoding. --#
     
-    # update row.
-    update_sql = "UPDATE outdoor_cafes SET"
-    update_sql += " geocode_address = '%s'" % ( current_place )
-    update_sql += ", geocode_latitude = '%s'" % ( current_lat )
-    update_sql += ", geocode_longitude = '%s'" % ( current_long )
-    update_sql += ", geocode_match_count = %i" % ( current_match_count )
-    update_sql += ", geocode_multiple_match_details = '%s'" % ( multiple_match_details )
-    update_sql += ", geocode_has_error = %i" % ( current_has_error )
-    update_sql += ", geocode_error_details = '%s'" % ( current_error_text.replace( "'", '"' ) )
-    update_sql += " WHERE id = %i" % ( current_id )
+    # update row values.
+    row_content[ "geocodeaddress" ] = current_place
+    row_content[ "geocodelatitude" ] = current_lat
+    row_content[ "geocode_longitude" ] = current_long
+    row_content[ "geocode_match_count" ] = current_match_count
+    row_content[ "geocode_multiple_match_details" ] = multiple_match_details
+    row_content[ "geocode_has_error" ] = current_has_error
+    row_content[ "geocode_error_details" ] = current_error_text
     
-    print( "==> " + update_sql )
-    my_update_cursor.execute( update_sql )
-    my_db.commit()
+    # update the row with a dictionary...
+    update_result = my_gdocs_client.UpdateRow( current_row_entry, row_content )
+    
+    # success?
+    if isinstance( update_result, gdata.spreadsheet.SpreadsheetsList ):
+    
+        print( 'Updated!' )
+    
+    #-- END check to see if update succeeded. --#
     
 #-- END loop over records. --#
-
-# close cursors
-my_cursor.close()
-my_update_cursor.close()
-my_db.close()
-
-'''
